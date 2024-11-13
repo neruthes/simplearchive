@@ -1,0 +1,5 @@
+build/
+*.pdf
+.envlocal
+data/
+data/

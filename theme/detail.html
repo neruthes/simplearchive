@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Info | MySimpleArchive</title>
+    <style>
+        .width-limit {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+    <style>
+        .big_download_btn {
+            display: inline-block;
+            font-size: 1.5rem;
+            background-color: #16E;
+            color: white !important;
+            padding: 6px 12px;
+            border-radius: 7px;
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="width-limit">
+        <header>
+            <h1>MySimpleArchive</h1>
+        </header>
+        <div>
+            <div>
+                <aside>Document Title:</aside>
+                <h2 id="js-doctitle"></h2>
+            </div>
+            <div>
+                <!-- <h3>Metadata</h3> -->
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>UUID</td>
+                            <td id="js-docuuid"></td>
+                        </tr>
+                        <tr>
+                            <td>File Name</td>
+                            <td id="js-docfilename"></td>
+                        </tr>
+                        <tr>
+                            <td>Author</td>
+                            <td id="js-docauthor"></td>
+                        </tr>
+                        <tr>
+                            <td>Publisher</td>
+                            <td id="js-docpublisher"></td>
+                        </tr>
+                        <tr>
+                            <td>Date Modified</td>
+                            <td>
+                                <time id="js-docmtime" datetime=""></time>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SHA-256 Hash</td>
+                            <td id="js-dochash"></td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+                <div>
+                    <a class="big_download_btn" id="js-doclink" href="">Get Document</a>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <!-- MySimpleArchive -->
+        </footer>
+    </div>
+    <script>
+        let xhr1 = new XMLHttpRequest();
+        xhr1.open('GET', './_digest.txt')
+        xhr1.send();
+        const get_digest_field = function (field_name) {
+            return xhr1.responseText.trim().split('\n').filter(line => line.startsWith(`${field_name}=`))[0].split('=').slice(1).join('=');
+        };
+        xhr1.onload = function () {
+            let toml_json = JSON.parse(get_digest_field('metadata_json'));
+            console.log(toml_json);
+            document.querySelector('#js-doctitle').innerHTML = toml_json.title;
+            document.querySelector('#js-docfilename').innerHTML = toml_json.filename;
+            document.querySelector('#js-docuuid').innerHTML = toml_json.uuid;
+            document.querySelector('#js-docauthor').innerHTML = toml_json.author;
+            document.querySelector('#js-docpublisher').innerHTML = toml_json.publisher;
+            document.querySelector('#js-dochash').innerHTML = get_digest_field('hash');
+            const dateObj = (new Date(get_digest_field('document_timestamp')));
+            document.querySelector('#js-docmtime').innerHTML =  dateObj.toLocaleString();
+            document.querySelector('#js-docmtime').setAttribute('datetime', get_digest_field('document_timestamp'));
+            document.querySelector('#js-doclink').href = `./${toml_json.filename}`;
+        }
+    </script>
+</body>
+</html>
