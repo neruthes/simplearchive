@@ -4,34 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Info | MySimpleArchive</title>
+    <link rel="stylesheet" href="../../styles.css">
     <style>
-        /* Presets and utilities */
-        html, body {
-            font-size: 14px;
-        }
-        .sans {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-        .width-limit {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-    </style>
-    <style>
-        /* Components */
-        .big_download_btn {
-            display: inline-block;
-            font-size: 1.5rem;
-            background-color: #16E;
-            color: white !important;
-            padding: 6px 12px;
-            border-radius: 7px;
-            text-decoration: none !important;
-        }
-        .site-header {
-            padding: 40px 0;
-            margin: 0 0 60px;
-            border-bottom: 1px solid #DDD;
+        /* Only on this page */
+        #js-doctitle {
+            margin: 0 0 30px;
         }
     </style>
 </head>
@@ -42,7 +19,8 @@
 
             <div>
                 <nav>
-                    <a href="../../">HOME</a>
+                    <a href="../../">Home</a>
+                    <a href="https://github.com/neruthes/simplearchive">Source Code</a>
                 </nav>
             </div>
         </header>
@@ -84,7 +62,7 @@
                         
                     </tbody>
                 </table>
-                <div>
+                <div style="padding: 50px 0;">
                     <a class="big_download_btn" id="js-doclink" href="">Get Document</a>
                 </div>
             </div>

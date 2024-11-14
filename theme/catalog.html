@@ -5,44 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Info | MySimpleArchive</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
-        /* Presets and utilities */
-        html,
-        body {
-            font-size: 14px;
-        }
-    
-        .sans {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-    
-        .width-limit {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-    </style>
-    <style>
-        /* Components */
-        .big_download_btn {
-            display: inline-block;
-            font-size: 1.5rem;
-            background-color: #16E;
-            color: white !important;
-            padding: 6px 12px;
-            border-radius: 7px;
-            text-decoration: none !important;
-        }
-        .site-header {
-            padding: 40px 0;
-            margin: 0 0 60px;
-            border-bottom: 1px solid #DDD;
-        }
-    </style>
-    <style>
-        /* This page only */
+        /* Only on this page */
         .app-entryitemcard {
             margin: 0 0 30px;
         }
+
         .app-entryitemcard h3 {
             margin: 0;
         }
@@ -56,7 +25,8 @@
 
             <div>
                 <nav>
-                    <a href="./">HOME</a>
+                    <a href="./">Home</a>
+                    <a href="https://github.com/neruthes/simplearchive">Source Code</a>
                 </nav>
             </div>
         </header>
@@ -90,7 +60,7 @@
             window.list_catalog_raw = xhr1.responseText.trim().split('\n').map(line => atob(line));
             console.log(list_catalog_raw);
             window.db_list = list_catalog_raw.map(parse_digest);
-            db_list.sort((a,b) => (a.document_timestamp_parsed - b.document_timestamp_parsed));
+            db_list.sort((a, b) => (a.document_timestamp_parsed - b.document_timestamp_parsed));
 
             document.querySelector('#js-mainlist').innerHTML = (function () {
                 let result_html = '';

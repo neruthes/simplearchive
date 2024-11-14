@@ -44,6 +44,7 @@ function create_new_slot() {
 
 function flush_theme() {
     cp -av "$DATADIR_PREFIX/../theme/catalog.html" "$DATADIR_PREFIX/index.html"
+    cp -av "$DATADIR_PREFIX/../theme/styles.css" "$DATADIR_PREFIX/styles.css"
     find "$DATADIR_PREFIX" -mindepth 2 -name index.html | sort | while read -r html_fn; do
         cp -av "$DATADIR_PREFIX/../theme/detail.html" "$html_fn"
     done
@@ -132,6 +133,12 @@ function create_doc_from_url() {
         _log 0 "(create_doc_from_url)  Using filename '$actual_file_name' instead."
     fi
     uuid="$uuid" d_filename="$actual_file_name" create_new_slot
-    wget "$pull_url" -O "$new_uuid_dir/$actual_file_name"
+    wget "$pull_url" -O "$new_uuid_dir/$actual_file_name" || _die 1 "Failed fetching document from the supplied URL."
     sed -i "s|PlaceholderDocFilename.pdf|$actual_file_name|g" "$new_uuid_dir/metadata.toml"
+    _log 0 "HINT: You may want to modify  < $new_uuid_dir/metadata.toml >  to configure metadata for this entry."
+    if [[ -z "$SA_EDITOR" ]]; then
+        _log 0 "HINT: If you set env SA_EDITOR to editor binary name like '/bin/nano', this script can automatically open editor at this moment."
+    else
+        command "$SA_EDITOR" "$new_uuid_dir/metadata.toml"
+    fi
 }

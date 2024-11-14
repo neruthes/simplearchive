@@ -1,8 +1,11 @@
-# simplearchive
+# SimpleArchive
+
+WIP. A static website generator for PDF archiving. Make your personal Arxiv.
 
 
-WIP.
+## Usage
 
+See [manual](https://github.com/neruthes/simplearchive/blob/master/doc/MANUAL.md).
 
 
 

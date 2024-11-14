@@ -1,5 +1,5 @@
+_dist
 build/
 *.pdf
 .envlocal
-data/
 data/

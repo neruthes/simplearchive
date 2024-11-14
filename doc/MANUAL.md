@@ -15,6 +15,51 @@ The script generates a static website according to metadata files in your filesy
 
 
 
+
+# Installation
+
+```sh
+./make.sh all
+./make.sh install
+```
+
+
+
+
+# Basic Usage
+
+## Initialization
+
+- Create a workspace directory and cd into it.
+- Make sure `./data` subdir exists.
+  - Alternatively, set env var `DATADIR_PREFIX` to supply a data path.
+- Copy the default theme into `./theme` subdir.
+
+## Advanced Notes
+
+- Use symlink to keep multiple themes.
+- Set env vars in `$PWD/.env` or `$PWD/.envlocal`.
+
+## Put PDF Into Archive
+
+```sh
+simplearchive.sh create_doc_from_url 'https://example.com/MyDoc.pdf'
+```
+
+
+
+
+# Making Theme
+
+This section may be expanded later.
+
+Study the default theme contained in this repository to learn how data is supplied to the frontend.
+
+
+
+
+
+
 # Extra Statements
 
-- Do not use this software to facilitate piracy.
+- Do not use this software to facilitate unauthorized redistribution of copyrighted materials.
