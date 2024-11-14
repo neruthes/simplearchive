@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Info | MySimpleArchive</title>
+    <style>
+        /* Presets and utilities */
+        html,
+        body {
+            font-size: 14px;
+        }
+    
+        .sans {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+    
+        .width-limit {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+    <style>
+        /* Components */
+        .big_download_btn {
+            display: inline-block;
+            font-size: 1.5rem;
+            background-color: #16E;
+            color: white !important;
+            padding: 6px 12px;
+            border-radius: 7px;
+            text-decoration: none !important;
+        }
+        .site-header {
+            padding: 40px 0;
+            margin: 0 0 60px;
+            border-bottom: 1px solid #DDD;
+        }
+    </style>
+    <style>
+        /* This page only */
+        .app-entryitemcard {
+            margin: 0 0 30px;
+        }
+        .app-entryitemcard h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="width-limit">
+        <header class="site-header">
+            <h1>MySimpleArchive: Catalog</h1>
+
+            <div>
+                <nav>
+                    <a href="./">HOME</a>
+                </nav>
+            </div>
+        </header>
+        <div>
+            <div>
+                <div id="js-mainlist">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <!-- MySimpleArchive -->
+        </footer>
+    </div>
+    <script>
+        const parse_digest = function (digest_txt) {
+            let lines = digest_txt.trim().split('\n');
+            let result_obj = {};
+            lines.forEach(function (line) {
+                let key = line.split('=')[0];
+                let value = line.split('=').slice(1).join('=');
+                result_obj[key] = value;
+            });
+            result_obj.metadata_json_parsed = JSON.parse(result_obj.metadata_json);
+            result_obj.document_timestamp_parsed = (new Date(result_obj.document_timestamp)).getTime();
+            return result_obj;
+        };
+        let xhr1 = new XMLHttpRequest();
+        xhr1.open('GET', './_catalog.txt')
+        xhr1.send();
+        xhr1.onload = function () {
+            window.list_catalog_raw = xhr1.responseText.trim().split('\n').map(line => atob(line));
+            console.log(list_catalog_raw);
+            window.db_list = list_catalog_raw.map(parse_digest);
+            db_list.sort((a,b) => (a.document_timestamp_parsed - b.document_timestamp_parsed));
+
+            document.querySelector('#js-mainlist').innerHTML = (function () {
+                let result_html = '';
+                db_list.forEach(function (entry_obj) {
+                    let data = entry_obj.metadata_json_parsed;
+                    let dir = './' + data.uuid.slice(0, 2) + '/' + data.uuid + '/';
+                    result_html += `<div class="app-entryitemcard">
+                        <h3>${data.title}</h3>
+                        <div>Date: ${(new Date(entry_obj.document_timestamp_parsed)).toLocaleString()}</div>
+                        <div>Author: ${data.author}</div>
+                        <div>Publisher: ${data.publisher}</div>
+                        <div>
+                            <a href="${dir}">Info</a>
+                            <a href="${dir}${data.filename.replace(/^\.\//, '')}">Download</a>
+                        </div>
+
+                    </div>`
+                });
+                return result_html;
+            })();
+        };
+    </script>
+</body>
+
+</html>
