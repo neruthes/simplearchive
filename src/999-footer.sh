@@ -12,7 +12,7 @@ case $1 in
         # argv: toml_fn
         build_toml_digest "$2"
         ;;
-    create_doc_from_url)
+    curl | create_doc_from_url)
         # argv: pull_url
         create_doc_from_url "$2"
         ;;

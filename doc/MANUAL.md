@@ -33,7 +33,7 @@ The script generates a static website according to metadata files in your filesy
 - Create a workspace directory and cd into it.
 - Make sure `./data` subdir exists.
   - Alternatively, set env var `DATADIR_PREFIX` to supply a data path.
-- Copy the default theme into `./theme` subdir.
+- Copy the default theme into `./theme` subdir from this repository.
 
 ## Advanced Notes
 
@@ -44,6 +44,8 @@ The script generates a static website according to metadata files in your filesy
 
 ```sh
 simplearchive.sh create_doc_from_url 'https://example.com/MyDoc.pdf'
+# Or...
+simplearchive.sh curl 'https://example.com/MyDoc.pdf'
 ```
 
 
