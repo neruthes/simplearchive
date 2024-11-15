@@ -27,4 +27,8 @@ case $1 in
     doc/MANUAL.md )
         pandoc -i doc/MANUAL.md -s --number-sections -o doc/MANUAL.pdf --pdf-engine=xelatex -V papersize=A4
         ;;
+    data/ )
+        cd data &&
+        [[ "$USER" == neruthes ]] && shareDirToNasPublic -a
+        ;;
 esac
