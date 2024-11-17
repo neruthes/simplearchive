@@ -60,7 +60,7 @@
             window.list_catalog_raw = xhr1.responseText.trim().split('\n').map(line => atob(line));
             console.log(list_catalog_raw);
             window.db_list = list_catalog_raw.map(parse_digest);
-            db_list.sort((a, b) => (a.document_timestamp_parsed - b.document_timestamp_parsed));
+            db_list.sort((a,b) => (b.document_timestamp_parsed - a.document_timestamp_parsed));
 
             document.querySelector('#js-mainlist').innerHTML = (function () {
                 let result_html = '';

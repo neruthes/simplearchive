@@ -12,6 +12,10 @@ function _log() {
     fi
 }
 
+function _warn() {
+    echo "[WARN] $1" > /dev/stderr
+}
+
 
 
 
@@ -109,11 +113,11 @@ function check_toml() {
     cached_filename="$(tomlq -rM .document.filename "$toml_fn")"
     [[ -e "$(dirname "$toml_fn")/$cached_filename" ]] || _die 2 "Cannot find $cached_filename as indicated in toml!"
     tmpstr="$(tomlq -rM .document.title "$toml_fn")"
-    [[ "$tmpstr" == NewUntitledDocument ]] || [[ "$tmpstr" == null ]] && _die 3 "Document title is not set!"
+    [[ "$tmpstr" == NewUntitledDocument ]] || [[ "$tmpstr" == null ]] && _warn "Document title is not set!"
     tmpstr="$(tomlq -rM .document.author "$toml_fn")"
-    [[ "$tmpstr" == PlaceholderAuthorName ]] || [[ "$tmpstr" == null ]] && _die 4 "Document author is not set!"
+    [[ "$tmpstr" == PlaceholderAuthorName ]] || [[ "$tmpstr" == null ]] && _warn "Document author is not set!"
     tmpstr="$(tomlq -rM .document.publisher "$toml_fn")"
-    [[ "$tmpstr" == PlaceholderPublisherName ]] || [[ "$tmpstr" == null ]] && _die 5 "Document publisher is not set!"
+    [[ "$tmpstr" == PlaceholderPublisherName ]] || [[ "$tmpstr" == null ]] && _warn "Document publisher is not set!"
     _log 5 "(check_toml)  $toml_fn looks good."
 }
 
@@ -135,6 +139,7 @@ function create_doc_from_url() {
     uuid="$uuid" d_filename="$actual_file_name" create_new_slot
     wget "$pull_url" -O "$new_uuid_dir/$actual_file_name" || _die 1 "Failed fetching document from the supplied URL."
     sed -i "s|PlaceholderDocFilename.pdf|$actual_file_name|g" "$new_uuid_dir/metadata.toml"
+    printf 'upstream = "%s\n"\n' "$pull_url" >> "$new_uuid_dir/metadata.toml"
     _log 0 "HINT: You may want to modify  < $new_uuid_dir/metadata.toml >  to configure metadata for this entry."
     if [[ -z "$SA_EDITOR" ]]; then
         _log 0 "HINT: If you set env SA_EDITOR to editor binary name like '/bin/nano', this script can automatically open editor at this moment."

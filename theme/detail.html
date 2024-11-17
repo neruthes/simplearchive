@@ -59,6 +59,10 @@
                             <td>SHA-256 Hash</td>
                             <td id="js-dochash"></td>
                         </tr>
+                        <tr>
+                            <td>Upstream</td>
+                            <td id="js-docupstream"></td>
+                        </tr>
                         
                     </tbody>
                 </table>
@@ -91,6 +95,8 @@
             document.querySelector('#js-docmtime').innerHTML =  dateObj.toLocaleString();
             document.querySelector('#js-docmtime').setAttribute('datetime', get_digest_field('document_timestamp'));
             document.querySelector('#js-doclink').href = `./${toml_json.filename}`;
+            document.querySelector('#js-docupstream').innerHTML = toml_json.upstream ? `<a
+            href="${toml_json.upstream}">${toml_json.upstream}</a>` : `N/A`;
         }
     </script>
 </body>
