@@ -126,20 +126,22 @@ function check_toml() {
 
 function create_doc_from_url() {
     pull_url="$1"
+    PDF_NEW_FN="$2"
     # uuid="$(gen_uuid)"
     # Instead of actually generating a new one, we try using a fake uuid from input url
     uuid="$(sha256sum <<< "4306241f40ac4366848510a804047ecb:$pull_url" | cut -c1-32)"
     new_uuid_dir="$DATADIR_PREFIX/${uuid:0:2}/$uuid"
     actual_file_name="$(basename "$pull_url")"
     if ! grep -isq '.pdf$' <<< "$actual_file_name"; then
-        actual_file_name="RenamedDocument.pdf"
+        [[ -z "$PDF_NEW_FN" ]] && PDF_NEW_FN="NewPDF-$(cut -c1-8 <<< "$uuid").pdf"
+        actual_file_name="$PDF_NEW_FN"
         _log 0 "(create_doc_from_url)  pull_url '$pull_url' does not end with '.pdf' or '.PDF'!"
         _log 0 "(create_doc_from_url)  Using filename '$actual_file_name' instead."
     fi
     uuid="$uuid" d_filename="$actual_file_name" create_new_slot
     wget "$pull_url" -O "$new_uuid_dir/$actual_file_name" || _die 1 "Failed fetching document from the supplied URL."
     sed -i "s|PlaceholderDocFilename.pdf|$actual_file_name|g" "$new_uuid_dir/metadata.toml"
-    printf 'upstream = "%s\n"\n' "$pull_url" >> "$new_uuid_dir/metadata.toml"
+    printf 'upstream = "%s"\n' "$pull_url" >> "$new_uuid_dir/metadata.toml"
     _log 0 "HINT: You may want to modify  < $new_uuid_dir/metadata.toml >  to configure metadata for this entry."
     if [[ -z "$SA_EDITOR" ]]; then
         _log 0 "HINT: If you set env SA_EDITOR to editor binary name like '/bin/nano', this script can automatically open editor at this moment."

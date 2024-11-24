@@ -2,7 +2,7 @@ case $1 in
     new_slot)
         create_new_slot
         ;;
-    build_catalog)
+    bc | build_catalog)
         build_catalog
         ;;
     flush_theme)
@@ -13,8 +13,8 @@ case $1 in
         build_toml_digest "$2"
         ;;
     curl | create_doc_from_url)
-        # argv: pull_url
-        create_doc_from_url "$2"
+        # argv: pull_url, PDF_NEW_FN
+        create_doc_from_url "$2" "$3"
         ;;
     bwf | build_website_full)
         build_website_full

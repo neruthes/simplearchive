@@ -28,6 +28,7 @@ case $1 in
         pandoc -i doc/MANUAL.md -s --number-sections -o doc/MANUAL.pdf --pdf-engine=xelatex -V papersize=A4
         ;;
     data/ )
+        simplearchive.sh
         cd data &&
         [[ "$USER" == neruthes ]] && shareDirToNasPublic -a
         ;;
